@@ -1,0 +1,35 @@
+npm init -y
+
+npm install express
+
+npm install dotenv cors body-parser morgan nodemon
+
+echo PORT=3000 > .env
+
+======================================================================================================
+
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+
+app.get('/', (req, res) => {
+res.json({ message: 'Hello, Express Server is running!' });
+});
+
+app.listen(PORT, () => {
+console.log(🚀 Server running on http://localhost:${PORT});
+});
+
+======================================================================================================
