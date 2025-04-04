@@ -1,13 +1,3 @@
-npm init -y
-
-npm install express
-
-npm install dotenv cors body-parser morgan nodemon
-
-echo PORT=3000 > .env
-
-======================================================================================================
-
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -28,8 +18,7 @@ app.get('/', (req, res) => {
 res.json({ message: 'Hello, Express Server is running!' });
 });
 
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    });
 
-======================================================================================================
+app.listen(PORT, () => {
+console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
