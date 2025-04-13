@@ -2,7 +2,7 @@ npm init -y
 
 npm install express
 
-npm install dotenv cors body-parser morgan nodemon
+npm install dotenv cors body-parser morgan nodemon mysql
 
 echo PORT=3000 > .env
 
