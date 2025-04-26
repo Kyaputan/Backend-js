@@ -1,25 +1,33 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const bcrypt = require("bcrypt");
 const connection = require("./database");
+require("dotenv").config(); 
 
 connection.connect((err) => {
   if (err) {
     console.error("❌ Database connection failed:", err.stack);
-    return;
+    process.exit(1);
   }
   console.log("✅ Connected to database.");
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan("dev"));
-
+// Using this Code everwhere to avoid CORS issues
+app.get('/', (req, res) => {
+  res.send('✅ Server is running!');
+});
+app.use((err, req, res, next) => {
+  console.error('❌ Unhandled error:', err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+// -------------------------------------------------------------
 app.post("/register", (req, res) => {
   const { Name, Email, Password } = req.body;
   const hashedPassword = bcrypt.hashSync(Password, 10);
@@ -168,6 +176,11 @@ app.delete("/delete", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
-});
+app.listen(PORT)
+  .on('listening', () => {
+    console.info(`[Server] Successfully started 🚀 on http://localhost:${PORT} (${process.env.NODE_ENV || 'development'} mode)`);
+  })
+  .on('error', (err) => {
+    console.error('[Server] Failed to start:', err);
+    process.exit(1);
+  });
