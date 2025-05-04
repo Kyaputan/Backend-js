@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, hostname, () => {
-  console.log('Listening on 127.0.0.1:8080');
+  console.log(`Listening on ${hostname}:${port}`);
 });
 
 

@@ -18,7 +18,9 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan("dev"));
+
 // Using this Code everwhere to avoid CORS issues
+
 app.get('/', (req, res) => {
   res.send('✅ Server is running!');
 });
@@ -26,6 +28,7 @@ app.use((err, req, res, next) => {
   console.error('❌ Unhandled error:', err);
   res.status(500).json({ error: 'Internal Server Error' });
 });
+
 // -------------------------------------------------------------
 // CRUD operations for books
 app.get("/books", (req, res) => {
@@ -64,7 +67,6 @@ app.get("/books/borrowed", (req, res) => {
 app.put("/books/borrow/:id", (req, res) => {
   const bookId = req.params.id;
 
-
   connection.query("UPDATE books SET Is_borrowed = 1 WHERE Book_ID = ?", [bookId], (err, results) => {
     if (err) {
       console.error("❌ Error borrowing book:", err);
@@ -93,7 +95,6 @@ app.put("/books/borrow/:id", (req, res) => {
         });
       });
     } else {
-      // ดึงข้อมูลหนังสือที่ยืมไปแล้ว
       connection.query("SELECT * FROM books WHERE Book_ID = ?", [bookId], (err, bookResults) => {
         if (err) {
           console.error("❌ Error fetching book details:", err);
@@ -116,7 +117,6 @@ app.put("/books/borrow/:id", (req, res) => {
 app.put("/books/return/:id", (req, res) => {
   const bookId = req.params.id;
 
-  // อัปเดตสถานะ Is_borrowed เป็น 0 (คืนหนังสือ)
   connection.query("UPDATE books SET Is_borrowed = 0 WHERE Book_ID = ?", [bookId], (err, results) => {
     if (err) {
       console.error("❌ Error returning book:", err);

@@ -1,0 +1,16 @@
+npm init -y
+npm i express 
+npm install -D nodemon
+npm i -D typescript
+npm i -D ts-node
+npm i -D @types/express
+tsc --init
+
+# "allowJs": true, 
+"rootDir": "./src",
+"outDir": "./dist",
+
+tsc เพื่อคอมไพล์ไฟล์ .ts ไปเป็น .js
+
+
+npm run dev // run node server.ts
