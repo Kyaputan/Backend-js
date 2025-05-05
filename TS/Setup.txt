@@ -3,8 +3,13 @@ npm i express
 npm install -D nodemon
 npm i -D typescript
 npm i -D ts-node
-npm i -D @types/express
+
+npm install express dotenv cors body-parser morgan
+npm install --save-dev typescript @types/node @types/express @types/cors @types/body-parser @types/morgan
+npm install mysql2
+npm install @types/dotenv
 tsc --init
+
 
 # "allowJs": true, 
 "rootDir": "./src",
@@ -14,3 +19,30 @@ tsc เพื่อคอมไพล์ไฟล์ .ts ไปเป็น .js
 
 
 npm run dev // run node server.ts
+
+
+=========================
+import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import morgan from 'morgan';
+
+# ใน TS ใช้ import ... from ... แทน require('...')
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+
+app.get('/', (req: Request, res: Response) => {
+  res.json({ message: 'Hello, Express Server is running!' });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
