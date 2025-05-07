@@ -5,7 +5,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 // Internal modules
-const { logger } = require("./Middleware");
+const { logger } = require("./middleware/tracker");
 const homeHandler = require("./routes/home");
 
 // Config
