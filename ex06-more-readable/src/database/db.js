@@ -23,11 +23,11 @@ const pool = mysql.createPool({
 
 pool.getConnection((err, connection) => {
   if (err) {
-    console.error("Database connection failed:", err.stack);
+    console.error("❌ Error : Database connection failed:", err.stack);
     return;
   }
   console.log(
-    "Successfully connected to database with connection id " +
+    "✅Successfully connected to database with connection id " +
       connection.threadId
   );
   connection.release();

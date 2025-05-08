@@ -1,5 +1,5 @@
-const homeHandler = (req, res) => {
+const ServerCheck = (req, res) => {
   res.json({ message: "✅ Server is running!" });
 };
 
-module.exports = homeHandler;
+module.exports = ServerCheck;

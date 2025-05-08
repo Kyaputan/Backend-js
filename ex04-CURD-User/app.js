@@ -87,7 +87,6 @@ app.put("/change", (req, res) => {
   const { Email, oldPass, NewPass } = req.body;
   const query = "SELECT * FROM Users WHERE Email = ?";
   if (oldPass === NewPass) {
-    
   connection.query(query, [Email], (error, results) => {
     if (error) {
       console.error("❌ Error executing query:", error);
