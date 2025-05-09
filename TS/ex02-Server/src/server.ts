@@ -1,7 +1,7 @@
 import Express, { Application, Request, Response, NextFunction } from "express";
 
 const PORT: number = 5000;
-let app: Application = Express();
+const app: Application = Express();
 
 app.use("/", (req: Request, res: Response, next: NextFunction) => {
   console.log(`Request Method: ${req.method}, Request URL: ${req.url}`);
