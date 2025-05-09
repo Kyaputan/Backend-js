@@ -9,10 +9,10 @@ const { logger } = require("./middleware/tracker");
 const ServerCheck = require("./routes/home");
 const UserbyID = require("./routes/UserID_Heandle");
 const AllUser = require("./routes/GetUser");
-const addUser = require("./routes/addUser");
-const login = require("./routes/loginHeadle");
-const changePassword = require("./routes/changePassword");
-const deleteUser = require("./routes/deleteUser");
+const Singup = require("./routes/SingupHeadle");
+const Login = require("./routes/loginHeadle");
+const ChangePassword = require("./routes/changePassword");
+const DeleteUser = require("./routes/deleteUser");
 // Config
 dotenv.config();
 const app = express();
@@ -32,17 +32,20 @@ app.get("/user", AllUser);
 app.get("/user/:id" ,UserbyID);
 
 // POST
-app.post("/singup", addUser);
-app.post("/login", login);
+app.post("/singup", Singup);
+app.post("/login", Login);
 
 // PUT
-app.put("/change", changePassword);
+app.put("/change", ChangePassword);
 
 
 // DELETE
-app.delete("/delete", deleteUser);
+app.delete("/delete", DeleteUser);
 // -------------------------------------------------------------------
 // Start server
-app.listen(PORT, () =>
-  console.log(`🚀 Server running at http://localhost:${PORT} ✅`)
-);
+app.listen(PORT).on('listening', () => {
+    console.info(`[Server] Successfully started 🚀 on http://localhost:${PORT} (${process.env.NODE_ENV || 'development'} mode)`);
+}).on('error', (err) => {
+    console.error('[Server] Failed to start:', err);
+    process.exit(1);
+});

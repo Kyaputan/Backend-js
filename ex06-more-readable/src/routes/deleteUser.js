@@ -6,9 +6,7 @@ const deleteUser = (req, res) => {
     const findUserQuery = "SELECT * FROM User WHERE Email = ?";
     
     if (!Email || !Password) {
-        return res.status(400).json({
-            message: "Email and password are required",
-        });
+        return res.status(400).json({message: "Email and password are required"});
     }
 
     pool.query(findUserQuery, [Email], (findError, users) => {
@@ -36,7 +34,10 @@ const deleteUser = (req, res) => {
             return res.status(500).json({error: "Failed to delete user"});
         }
           
-        res.json({message: "User deleted successfully",user: {id: user.User_id,name: user.Name,},});
+        res.json({message: "User deleted successfully",
+            user:{id: user.User_id,
+                name: user.Name,},
+            });
     });
     });
 };

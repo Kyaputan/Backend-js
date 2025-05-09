@@ -1,7 +1,7 @@
 const pool = require("../database/db");
 const bcrypt = require("bcrypt");
 
-const addUser = (req, res) => {
+const SingupHandler = (req, res) => {
     const { Name, Email, Password } = req.body;
     const hashedPassword = bcrypt.hashSync(Password, 10);
     const query = "INSERT INTO User (Name, Email ,Password) VALUES (?, ?,?)";
@@ -30,4 +30,4 @@ const addUser = (req, res) => {
     });
 }
 
-module.exports = addUser;
+module.exports = SingupHandler;
