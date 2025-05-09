@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const deleteUser = (req, res) => {
     const { Email, Password } = req.body;
     const findUserQuery = "SELECT * FROM User WHERE Email = ?";
+    
     if (!Email || !Password) {
         return res.status(400).json({
             message: "Email and password are required",

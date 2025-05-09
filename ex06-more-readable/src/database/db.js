@@ -1,15 +1,8 @@
-const dotenv = require("dotenv");
 const mysql = require("mysql2");
-dotenv.config();
+// Fix the import path - go up one directory level
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } = require('../config/config.js');
 
-const DB_HOST = process.env.DB_HOST || "localhost";
-const DB_USER = process.env.DB_USER || "root";
-const DB_PASSWORD = process.env.DB_PASSWORD || "310146";
-const DB_PORT = process.env.DB_PORT || "3306";
-const DB_NAME = process.env.DB_NAME || "My_SQL";
-
-console.log(`Connecting to DB: ${DB_USER}@${DB_HOST}:${DB_PORT} `);
-
+console.log(`Connecting to DB: ${DB_USER}@${DB_HOST}:${DB_NAME}}`);
 
 const pool = mysql.createPool({
     host: DB_HOST,
