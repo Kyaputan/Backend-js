@@ -16,6 +16,10 @@ app.get("/api", (req: Request, res: Response) => {
   res.json({ message: "Hello from the /API!" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT).on('listening', () => {
+  console.info(`[Server] Successfully started 🚀 on http://localhost:${PORT} (${process.env.NODE_ENV || 'development'} mode)`);
+}).on('error', (err) => {
+  console.error('[Server] Failed to start:', err);
+  process.exit(1);
 });
+
