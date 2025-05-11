@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require('../config/config.js');
 
-const loginHandler = (req, res) => {
+const loginHandler = async (req, res) => {
     const { Email, Password } = req.body;
     const query = "SELECT * FROM users WHERE email = ?";
     if (!Email || !Password) {
@@ -17,16 +17,12 @@ const loginHandler = (req, res) => {
         });
     }
 
-    pool.query(query, [Email], (error, results) => {
-        if (error) {
-          console.error("❌ Error executing query:", error);
-          return res.status(500).json({error: "Database query failed"});
-        }
+    try {
+    const [results] = await pool.query(query, [Email]);
+    if (results.length === 0) {
+      return res.status(401).json({message: "User not found"});
+    }
     
-        if (results.length === 0) {
-          return res.status(401).json({message: "User not found"});
-        }
-
     const user = results[0];
     // ตรวจสอบว่า Password ใน DB มีจริงหรือไม่
     if (!user.password) {
@@ -37,15 +33,22 @@ const loginHandler = (req, res) => {
     const isMatch = bcrypt.compareSync(Password, user.password);
     
     if (isMatch) {
-      const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
+      const payload = {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+    };
+
+      const token = jwt.sign(payload, JWT_SECRET, {
         expiresIn: "1h",
       });
     
       return res.json({
         message: "Login successful",
         user: {
-          id: user.id,
+          userId: user.id,
           name: user.Name,
+          role: user.role,
           token,
         },
       });
@@ -53,7 +56,10 @@ const loginHandler = (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
     
-  });
+      } catch (error) {
+      console.error("❌ Error executing query:", error);
+      return res.status(500).json({ error: "Database query failed" });
+    }
 };
   
   module.exports = loginHandler;

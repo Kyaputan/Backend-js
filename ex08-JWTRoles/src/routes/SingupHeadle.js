@@ -1,7 +1,7 @@
 const pool = require("../database/db");
 const bcrypt = require("bcrypt");
 
-const SingupHandler = (req, res) => {
+const SingupHandler = async (req, res) => {
     const { Name, Email, Password } = req.body;
     const hashedPassword = bcrypt.hashSync(Password, 10);
     const query = "INSERT INTO users (Name, Email ,Password) VALUES (?, ?,?)";
@@ -17,8 +17,9 @@ const SingupHandler = (req, res) => {
     }
     
 
-    pool.query(query, [Name,Email ,hashedPassword], (err, results) => {
-        if (err) {
+    try {
+    const [results] = await pool.query(query, [Name,Email ,hashedPassword]);
+        if (results.length === 0) {
             console.error("❌ Error adding user:", err.stack);
             res.status(500).json({ error: "Internal server error" });
             return;
@@ -27,7 +28,10 @@ const SingupHandler = (req, res) => {
             user: {name: Name ,
                 Email: Email,}
         });
-    });
+    } catch (error) {
+        console.error("❌ Error adding user:", error.stack);
+        res.status(500).json({ error: "Internal server error" });
+    }
 }
 
 module.exports = SingupHandler;

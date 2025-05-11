@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const changePassword = (req, res) => {
   const ID = req.user.userId
   const { OldPass, NewPass } = req.body;
-  const query = "SELECT * FROM User WHERE UUID = ?";
+  const query = "SELECT * FROM users WHERE id = ?";
 
 
   if (OldPass === NewPass) {
@@ -32,7 +32,7 @@ const changePassword = (req, res) => {
     if (isMatch) {
 
       const hashedPassword = bcrypt.hashSync(NewPass, 10);
-      const query = "UPDATE User SET Password = ? WHERE UUID = ?";
+      const query = "UPDATE users SET Password = ? WHERE id = ?";
 
       pool.query(query, [hashedPassword, ID], (error) => {
         if (error) {

@@ -10,8 +10,9 @@ const Product = (req, res) => {
             message: "✅ Server is running!" , 
             User_ID:  req.user.userId,
             products: results.map(row => ({
-                name: row.name,
-                price:row.price
+                name: row.product_name,
+                price:row.prices,
+                stock:row.stock,
             }))
         }); 
     });
