@@ -2,23 +2,23 @@ const pool = require("../database/db");
 const bcrypt = require("bcrypt");
 
 const SingupHandler = async (req, res) => {
+
     const { Name, Email, Password } = req.body;
     const hashedPassword = bcrypt.hashSync(Password, 10);
-    const query = "INSERT INTO users (Name, Email ,Password) VALUES (?, ?,?)";
+    
     if (!Name || !Email || !Password) {
         return res.status(400).json({
             message: "Name, Email, and Password are required",
         });
     }
-    if (Name == Email) {
-        return res.status(400).json({
-            message: "Name and Email cannot be the same",
-        });
-    }
     
+    const query = "INSERT INTO users (Name, Email ,Password,role ,created_at ,updated_at) VALUES (?, ?,?,?)";
+    const role = "user";
+    const createdAt = new Date();
+    const updatedAt = new Date();
 
     try {
-    const [results] = await pool.query(query, [Name,Email ,hashedPassword]);
+    const [results] = await pool.query(query, [Name,Email ,hashedPassword ,role,createdAt,updatedAt]);
         if (results.length === 0) {
             console.error("❌ Error adding user:", err.stack);
             res.status(500).json({ error: "Internal server error" });
