@@ -38,7 +38,7 @@ app.use(logger);
 // Authenticate
 
 app.get("/user/Product", Product);
-app.put("/user/change", ChangePassword);
+app.patch("/user/change", ChangePassword);
 app.delete("/user/delete", DeleteUser);
 
 // -------------------------------------------------------------------

@@ -3,16 +3,17 @@ const bcrypt = require("bcrypt");
 
 
 const changePassword = (req, res) => {
-  const { Email, oldPass, NewPass } = req.body;
-  const query = "SELECT * FROM User WHERE Email = ?";
+  const ID = req.user.userId
+  const { OldPass, NewPass } = req.body;
+  const query = "SELECT * FROM User WHERE UUID = ?";
 
 
-  if (oldPass === NewPass) {
+  if (OldPass === NewPass) {
     return res.status(400).json({message: "New password cannot be the same as old password",});
   }
 
 
-  pool.query(query, [Email], (error, results) => {
+  pool.query(query, [ID], (error, results) => {
     if (error) {
       console.error("❌ Error executing query:", error);
       return res.status(500).json({ error: "Database query failed" });
@@ -25,15 +26,15 @@ const changePassword = (req, res) => {
 
 
     const user = results[0];
-    const isMatch = bcrypt.compareSync(oldPass, user.Password);
+    const isMatch = bcrypt.compareSync(OldPass, user.Password);
 
 
     if (isMatch) {
 
       const hashedPassword = bcrypt.hashSync(NewPass, 10);
-      const query = "UPDATE User SET Password = ? WHERE Email = ?";
+      const query = "UPDATE User SET Password = ? WHERE UUID = ?";
 
-      pool.query(query, [hashedPassword, Email], (error) => {
+      pool.query(query, [hashedPassword, ID], (error) => {
         if (error) {
           console.error("❌ Error executing query:", error);
           return res.status(500).json({ error: "Database query failed" });

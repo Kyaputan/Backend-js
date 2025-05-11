@@ -2,14 +2,16 @@ const pool = require("../database/db");
 const bcrypt = require("bcrypt");
 
 const deleteUser = (req, res) => {
-    const { Email, Password } = req.body;
-    const findUserQuery = "SELECT * FROM User WHERE Email = ?";
     
-    if (!Email || !Password) {
-        return res.status(400).json({message: "Email and password are required"});
+    const Id =req.user.userId
+    const { Password } = req.body;
+    const findUserQuery = "SELECT * FROM User WHERE UUID = ?";
+    
+    if (!Password) {
+        return res.status(400).json({message: "Password is required"});
     }
 
-    pool.query(findUserQuery, [Email], (findError, users) => {
+    pool.query(findUserQuery, [Id], (findError, users) => {
     if (findError) {
         console.error("❌ Error executing find user query:", findError);
         return res.status(500).json({error: "Database query failed"});
@@ -20,24 +22,32 @@ const deleteUser = (req, res) => {
     }
   
     const user = users[0];
-    const isMatch = bcrypt.compareSync(Password, user.Password);
-  
-    if (!isMatch) {
-        return res.status(401).json({message: "Invalid password"});
-    }
-  
-    const deleteUserQuery = "DELETE FROM User WHERE Email = ?";
-    
-    pool.query(deleteUserQuery,[Email],(deleteError, deleteResult) => {
-        if (deleteError) {
-            console.error("❌ Error executing delete query:", deleteError);
-            return res.status(500).json({error: "Failed to delete user"});
+    bcrypt.compare(Password, user.Password, (err, isMatch) => {
+        if (err) {
+            console.error("❌ Error comparing passwords:", err);
+            return res.status(500).json({ error: "Internal server error" });
         }
-          
-        res.json({message: "User deleted successfully",
-            user:{id: user.User_id,
-                name: user.Name,},
+    
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid password" });
+        }
+
+        const deleteUserQuery = "DELETE FROM User WHERE UUID = ?";
+        
+        pool.query(deleteUserQuery, [Id], (deleteError, deleteResult) => {
+            if (deleteError) {
+                console.error("❌ Error executing delete query:", deleteError);
+                return res.status(500).json({ error: "Failed to delete user" });
+            }
+    
+            res.json({
+                message: "User deleted successfully",
+                user: {
+                    id: user.UUID,
+                    name: user.Name,
+                },
             });
+        });
     });
     });
 };
