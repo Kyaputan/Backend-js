@@ -19,10 +19,7 @@ pool.getConnection((err, connection) => {
     console.error("❌ Error : Database connection failed:", err.stack);
     return;
   }
-  console.log(
-    "✅Successfully connected to database with connection id " +
-      connection.threadId
-  );
+  console.log("✅Successfully connected to database with connection id " + connection.threadId);
   connection.release();
 });
 

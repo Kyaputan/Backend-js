@@ -11,26 +11,36 @@ const SingupHandler = async (req, res) => {
             message: "Name, Email, and Password are required",
         });
     }
-    
-    const query = "INSERT INTO users (Name, Email ,Password,role ,created_at ,updated_at) VALUES (?, ?,?,?)";
-    const role = "user";
-    const createdAt = new Date();
-    const updatedAt = new Date();
-
     try {
-    const [results] = await pool.query(query, [Name,Email ,hashedPassword ,role,createdAt,updatedAt]);
-        if (results.length === 0) {
-            console.error("❌ Error adding user:", err.stack);
-            res.status(500).json({ error: "Internal server error" });
-            return;
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [Email]);
+        if (rows.length > 0) {
+            return res.status(400).json({ msg: 'User already exists' });
         }
-        res.json({message:"User added successfully" ,
-            user: {name: Name ,
-                Email: Email,}
-        });
+        
+        const query = "INSERT INTO users (Name, Email ,Password,role ,created_at ,updated_at) VALUES (?, ?,?,?)";
+        const role = "user";
+        const createdAt = new Date();
+        const updatedAt = new Date();
+
+        try {
+            const [results] = await pool.query(query, [Name,Email ,hashedPassword ,role,createdAt,updatedAt]);
+            if (results.length === 0) {
+                console.error("❌ Error adding user:", err.stack);
+                res.status(500).json({ error: "Internal server error" });
+                return;
+            }
+
+            res.json({message:"User added successfully" ,
+                user: {name: Name ,
+                    Email: Email,}
+            });
+        } catch (error) {
+            console.error("❌ Error adding user:", error.stack);
+            res.status(500).json({ error: "Internal server error" });
+        }
     } catch (error) {
-        console.error("❌ Error adding user:", error.stack);
-        res.status(500).json({ error: "Internal server error" });
+        console.error("❌ Error checking user:", error.stack);
+        return res.status(500).json({ error: "Internal server error" });
     }
 }
 

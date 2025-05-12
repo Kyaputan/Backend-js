@@ -1,7 +1,24 @@
 const pool = require("../database/db");
 
 const allusers = async (req, res) => {
+    const ID = req.user.userId;
+    const userRole = req.user.role;
 
+    const confirmUserQuery = "SELECT * FROM users WHERE id = ?";
+
+    if (!ID || !userRole) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+        const [results] = await pool.query(confirmUserQuery, [ID]);
+        if (results.length === 0) {
+            return res.status(401).json({ message: "User not found" });
+        }} catch (error) {
+        console.error("❌ Error executing query:", error);
+        return res.status(500).json({ error: "Database query failed" });
+    }
+    
     const query = "SELECT * FROM users";
     
     try {
@@ -20,18 +37,3 @@ const allusers = async (req, res) => {
 };
 
 module.exports = allusers;
-
-
-// {
-//     "message": "All users",
-//     "users": {
-//       "id": 1,
-//       "created_at": "2025-05-11T12:28:46.437Z",
-//       "updated_at": "2025-05-11T12:28:46.437Z",
-//       "deleted_at": null,
-//       "name": "Rachata-1234",
-//       "email": "Rachata@gmail.com",
-//       "password": "$2a$10$UPq.XLg2BRwh5b2j6.OoLuXa.IRvEL3fTSpiaRQkgjcqbt.tJmiiq",
-//       "role": "admin"
-//     }
-//   }

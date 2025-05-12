@@ -1,4 +1,5 @@
 const pool = require("../database/db");
+
 const Product = async (req, res) => {
   const ID = req.user.userId;
   const userRole = req.user.role;
@@ -23,13 +24,13 @@ const Product = async (req, res) => {
     const [results] = await pool.query(query);
     res.json({
       message: "Our Products",
-      email: req.user.email,
+      email:   req.user.email,
       User_ID: req.user.userId,
-      role: req.user.role,
+      role:    req.user.role,
       products: results.map((row) => ({
-        name: row.product_name,
-        price: row.prices,
-        stock: row.stock,
+        name:   row.product_name,
+        price:  row.prices,
+        stock:  row.stock,
       })),
     });
   } catch (error) {
