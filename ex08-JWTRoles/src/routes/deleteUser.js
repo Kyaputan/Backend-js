@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const deleteUser = async(req, res) => {
     
-    const Id =req.user.userId
+    const userId = req.user?.userId
     const { Password } = req.body;
     const findUserQuery = "SELECT * FROM users WHERE id = ?";
     
@@ -12,42 +12,42 @@ const deleteUser = async(req, res) => {
     }
 
     try {
-    const [users] = await pool.query(findUserQuery, [Id]);
-    if (users.length === 0) {
-        return res.status(404).json({message: "User not found"});
-    }
-  
-    const user = users[0];
-    bcrypt.compare(Password, user.password, async(err, isMatch) => {
+      const [users] = await pool.execute(findUserQuery, [userId]);
+
+      if (users.length === 0) {
+          return res.status(404).json({message: "User not found"});
+      }
+
+      const user = users[0];
+
+      bcrypt.compare(Password, user.password, async(err, isMatch) => {
+
         if (err) {
             console.error("❌ Error comparing passwords:", err);
             return res.status(500).json({ error: "Internal server error" });
         }
-    
+
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid password" });
         }
 
-        const deleteUserQuery = "DELETE FROM users WHERE id = ?";
-        
-        try {
-        const [deleteResult] = await pool.query(deleteUserQuery, [Id]);
-            if (deleteResult.length === 0) {
-                console.error("❌ Error deleting user:", deleteError);
-                return res.status(500).json({ error: "Failed to delete user" });
-            }
-    
-            res.json({
-                message: "User deleted successfully",
-                user: {
-                    id: user.id,
-                    name: user.Name,
-                },
-            });
-        } catch (deleteError) {
-            console.error("❌ Error deleting user:", deleteError);
-            return res.status(500).json({ error: "Failed to delete user" });
-        }
+      const deleteUserQuery = "DELETE FROM users WHERE id = ?";
+
+          const [deleteResult] = await pool.execute(deleteUserQuery, [userId]);
+
+          if (deleteResult.affectedRows === 0) {
+              console.error("❌ Error deleting user:", deleteError);
+              return res.status(500).json({ error: "Failed to delete user" });
+          }
+
+          res.json({
+              message: "User deleted successfully",
+              user: {
+                  id: user.id,
+                  name: user.Name,
+              },
+          });
+
     });
     } catch (findError) {
         console.error("❌ Error executing find user query:", findError);
