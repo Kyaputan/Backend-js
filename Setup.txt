@@ -1,6 +1,7 @@
 npm init -y
 
 npm install express bcrypt dotenv cors body-parser morgan mysql2
+npm install mongoose multer
 npm install -D nodemon
 
 echo PORT=3000 > .env

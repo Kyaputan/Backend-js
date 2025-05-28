@@ -1,11 +1,11 @@
 const UserDB = require("../models/User");
 const jwt = require("jsonwebtoken");
-const { expressjwt } = require("express-jwt");
 const bcrypt = require("bcrypt");
 const { JWT_SECRET, bcrypt_salt_rounds } = require("../config/config");
 
 exports.Register = async (req, res) => {
     const { name, email, password } = req.body;
+
     try {
         const salt = await bcrypt.genSalt(bcrypt_salt_rounds);
         const hash = await bcrypt.hash(password, salt);
@@ -23,6 +23,7 @@ exports.Register = async (req, res) => {
 
 exports.Login = async (req, res) => {
     const { email, password } = req.body;
+
     try {
         const user = await UserDB.findOne({ email }).exec();
         if (!user) {
@@ -41,8 +42,4 @@ exports.Login = async (req, res) => {
     }
 };
 
-exports.requireLogin = expressjwt({
-    secret: JWT_SECRET,
-    algorithms: ["HS256"],
-    requestProperty: "auth",
-});
+
