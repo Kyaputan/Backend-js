@@ -1,5 +1,6 @@
 const http = require("http");
-const dt = require("./dt")
+const { json } = require("stream/consumers");
+// const dt = require("./dt")
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -11,11 +12,11 @@ const port = 3000;
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("The date and time are currently: " + dt.myDateTime());
+  res.end(JSON.stringify({ author :  "Rachata Singkhet"}));
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Listening on ${hostname}:${port}`);
+  console.log(`Listening on  http://localhost:${port}`);
 });
 
 
