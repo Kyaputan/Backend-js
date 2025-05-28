@@ -5,7 +5,7 @@ const cors = require('cors');
 const connectDB = require('./database/db');
 const { PORT } = require('./config/config');
 const ServerCheck = require('./controllers/home');
-
+const authRoutes = require('./routes/auth');
 
 connectDB();
 
@@ -19,6 +19,8 @@ app.use(morgan("dev"));
 // Routes
 app.get("/", ServerCheck);
 
+
+app.use("/auth", authRoutes);
 // -------------------------------------------------------------------
 // Start server
 app.listen(PORT).on('listening', () => {
