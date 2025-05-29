@@ -18,13 +18,14 @@ const BookSchema = mongoose.Schema({
         type:String
     },
     borrowing:{
-        type:String,
+        type:Boolean,
         required:true,
-        default:"not_yet"
+        default:false
     },
     who:{
-        type:String,
-        default:"admin"
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Users",
+        default:null
     }
 })
 

@@ -1,4 +1,4 @@
-const expressjwt = require("express-jwt");
+const { expressjwt } = require("express-jwt");
 const { JWT_SECRET } = require("../config/config");
 
 exports.requireLogin = expressjwt({
@@ -13,6 +13,7 @@ exports.checkRole = (role) => {
         if (req.auth && req.auth.role === role) {
             next();
         } else {
+            console.log(`❌ Role mismatched ${role}`);
             return res.status(403).json({ message: "Forbidden: Insufficient role" });
         }
     };

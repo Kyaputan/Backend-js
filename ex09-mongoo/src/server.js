@@ -6,6 +6,7 @@ const connectDB = require('./database/db');
 const { PORT } = require('./config/config');
 const ServerCheck = require('./controllers/home');
 const authRoutes = require('./routes/auth');
+const bookshelfRoutes = require('./routes/bookshelf');
 
 connectDB();
 
@@ -17,10 +18,11 @@ app.use(morgan("dev"));
 
 // -------------------------------------------------------------------
 // Routes
-app.get("/", ServerCheck);
+app.get("/", ServerCheck); 
 
 
 app.use("/auth", authRoutes);
+app.use("/bookshelf", bookshelfRoutes);
 // -------------------------------------------------------------------
 // Start server
 app.listen(PORT).on('listening', () => {

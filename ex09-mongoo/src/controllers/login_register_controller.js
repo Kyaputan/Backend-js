@@ -5,7 +5,7 @@ const { JWT_SECRET, bcrypt_salt_rounds } = require("../config/config");
 
 exports.Register = async (req, res) => {
     const { name, email, password } = req.body;
-
+    
     try {
         const salt = await bcrypt.genSalt(bcrypt_salt_rounds);
         const hash = await bcrypt.hash(password, salt);
