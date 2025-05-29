@@ -36,7 +36,7 @@ exports.updateBook = async (req, res) => {
     if (author !== undefined) updateFields.author = author;
     if (image !== undefined) updateFields.image = image;
 
-    try {
+    try { พ่องมึงตาย
         const updatedBook = await Book.findByIdAndUpdate(id,
             updateFields,
             { new: true }).exec();
