@@ -5,7 +5,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 module.exports = {
   PORT: process.env.PORT || 3000,
-  JWT_SECRET: process.env.JWT_SECRET || "secret",
+  JWT_SECRET: process.env.JWT_SECRET || "Error",
   DATABASE: process.env.DATABASE || "Error",
-  bcrypt_salt_rounds: process.env.bcrypt_salt_rounds || 10,
+  bcrypt_salt_rounds: process.env.bcrypt_salt_rounds || "Error",
 };
