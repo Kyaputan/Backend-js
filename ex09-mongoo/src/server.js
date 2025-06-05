@@ -7,6 +7,7 @@ const { PORT } = require('./config/config');
 const ServerCheck = require('./controllers/home');
 const authRoutes = require('./routes/auth');
 const bookshelfRoutes = require('./routes/bookshelf');
+const borrowRoutes = require('./routes/borrow');
 
 connectDB();
 
@@ -23,6 +24,7 @@ app.get("/", ServerCheck);
 
 app.use("/auth", authRoutes);
 app.use("/bookshelf", bookshelfRoutes);
+app.use("/book", borrowRoutes);
 // -------------------------------------------------------------------
 // Start server
 app.listen(PORT).on('listening', () => {
