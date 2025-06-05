@@ -7,5 +7,5 @@ module.exports = {
   PORT: process.env.PORT || 3000,
   JWT_SECRET: process.env.JWT_SECRET || "Error",
   DATABASE: process.env.DATABASE || "Error",
-  bcrypt_salt_rounds: process.env.bcrypt_salt_rounds || "Error",
+  bcrypt_salt_rounds: Number(process.env.BCRYPT_SALT_ROUNDS || ""),
 };

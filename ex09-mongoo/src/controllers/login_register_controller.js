@@ -5,7 +5,6 @@ const { JWT_SECRET, bcrypt_salt_rounds } = require("../config/config");
 
 exports.Register = async (req, res) => {
     const { name, email, password } = req.body;
-    
     try {
         const salt = await bcrypt.genSalt(bcrypt_salt_rounds);
         const hash = await bcrypt.hash(password, salt);
@@ -17,7 +16,7 @@ exports.Register = async (req, res) => {
             role: user.role
         });
     } catch (err) {
-        return res.status(400).json({ error: "Email already exists" });
+        return res.status(500).json({ error: "Server error" });
     }
 };
 
@@ -37,7 +36,6 @@ exports.Login = async (req, res) => {
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1d" });
         res.json({ token, user: payload });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: "Server error" });
     }
 };
