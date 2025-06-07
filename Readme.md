@@ -83,8 +83,6 @@ npm run dev
 ## 📚 Recommended Learning Resources
 
 - [Express Docs](https://expressjs.com/)
-- [Koa Docs](https://koajs.com/)
-- [Fastify Docs](https://www.fastify.io/docs/latest/)
 - [Node.js Best Practices](https://github.com/goldbergyoni/nodebestpractices)
 
 ## 💻 Common Commands
@@ -92,10 +90,7 @@ npm run dev
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Run server in development mode with hot-reloading |
-| `npm start` | Run server in production mode |
-| `npm test` | Run test suite |
-| `npm run lint` | Run ESLint to check code style |
-| `npm run build` | Build for production (TypeScript projects) |
+
 
 ## ⚙️ Environment Variables
 
@@ -111,22 +106,7 @@ MONGO_URI=mongodb://localhost:27017/myapp
 
 # JWT Configuration
 JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRES_IN=1d
 
-# API Configuration
-API_PREFIX=/api/v1
-```
-
-## 🐳 Docker Support
-
-Each project includes Dockerfile for containerization:
-
-```bash
-# Build Docker image
-docker build -t express-app ./express_app
-
-# Run container
-docker run -p 3000:3000 express-app
 ```
 
 ## 📱 API Examples
