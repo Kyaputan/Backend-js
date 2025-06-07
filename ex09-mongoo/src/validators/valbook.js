@@ -7,7 +7,7 @@ exports.addBookSchema = Joi.object({
     image: Joi.string().allow(null).allow("").required()
 });
 
-exports.deleteBookSchema = Joi.object({
+exports.idBookSchema = Joi.object({
     id: Joi.string().required()
 });
 
@@ -17,3 +17,4 @@ exports.updateBookSchema = Joi.object({
     author: Joi.string().min(2).max(50).optional(),
     image: Joi.string().allow(null).allow("").optional()
 });
+
